@@ -1,6 +1,6 @@
 {
   "name": "@codenokami/node-api-master",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Professional utility package for Express.js APIs with Auth, Socket, and Error Handling",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
