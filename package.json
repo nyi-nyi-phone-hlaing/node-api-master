@@ -1,5 +1,5 @@
 {
-  "name": "@cnk/node-api-master",
+  "name": "@codenokami/node-api-master",
   "version": "1.4.0",
   "description": "Professional utility package for Express.js APIs with Auth, Socket, and Error Handling",
   "main": "./dist/index.cjs",
