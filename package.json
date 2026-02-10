@@ -1,0 +1,60 @@
+{
+  "name": "@cnk/node-api-master",
+  "version": "1.4.0",
+  "description": "Professional utility package for Express.js APIs with Auth, Socket, and Error Handling",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.js --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.js --format cjs,esm --watch --dts",
+    "lint": "eslint src/**/*.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "joi": "^17.12.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "peerDependencies": {
+    "mongoose": "^8.0.0",
+    "socket.io": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "mongoose": {
+      "optional": true
+    },
+    "socket.io": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "CNK",
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "api",
+    "auth",
+    "socket.io",
+    "jwt",
+    "mongoose",
+    "validation",
+    "utility"
+  ],
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}
