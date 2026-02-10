@@ -1,164 +1,99 @@
-﻿# @cnk/node-api-master 🚀
+﻿# @codenokami/node-api-master 🚀
 
-A robust, professional-grade utility package for Express.js APIs. This package simplifies database connections, authentication, real-time communication with Socket.io, error handling, and request validation.
+A modern, robust, and professional Node.js utility package for building scalable REST APIs. Built with **ES Modules** and **TypeScript Support**, providing dual-format (CJS & ESM) compatibility.
+
+---
+
+## ✨ Features
+
+- 🛠 **Standard API Response**: Consistent success and error response wrappers.
+- 🛡 **Global Error Handling**: Centralized error middleware with operational vs programming error detection.
+- ⚡ **Async Handler**: Eliminate the need for messy `try-catch` blocks in controllers.
+- 🧪 **Joi Validations**: Pre-defined schemas for users, object IDs, and pagination.
+- 🔑 **Auth Helpers**: Robust password hashing and JWT management.
+- 🆔 **Secure UUID**: RFC 4122 compliant UUID v4 generator.
+- 🔌 **Socket.io Auth**: Middleware for securing your real-time connections.
 
 ---
 
 ## 📦 Installation
 
-This package is designed to work with **mongoose** and **socket.io** as peer dependencies to avoid version conflicts.
-
 ```bash
-# Install the core package
-npm install @cnk/node-api-master
-
-# Install required peer dependencies
-npm install mongoose socket.io
-
+npm install @codenokami/node-api-master
 ```
 
 ---
 
-## 📂 Features
+## 🚀 Quick Start
 
-- **🛡 Auth & Admin Middleware**: JWT-based route protection and role-based access control.
-- **🔌 Socket.io Helper**: Integrated real-time communication with JWT authentication support.
-- **🚨 Global Error Handler**: Centralized error management using the `AppError` class.
-- **⚡ CatchAsync Utility**: Eliminate repetitive `try-catch` blocks in your controllers.
-- **✅ Joi Validation**: Pre-defined and custom schemas for request validation.
-- **🔗 DB Helper**: Simplified MongoDB connection setup.
-- **📊 Standardized Responses**: Uniform success and error API response formats.
+### 1. Setup Global Error Middleware
 
----
-
-## 📖 Detailed Usage Guide
-
-### 1. Database Connection & Server Setup
-
-Handle dynamic ports and database connections efficiently.
+In your main app file (e.g., `index.js` or `app.js`):
 
 ```javascript
-const { connectDB, STATUS_CODES } = require("@cnk/node-api-master");
+import express from "express";
+import { errorMiddleware } from "@codenokami/node-api-master";
 
-// Start DB
-connectDB(process.env.MONGO_URI);
+const app = express();
 
-// Dynamic Port
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-```
+// ... your routes ...
 
----
-
-### 2. Socket.io with Authentication
-
-Setup a secure real-time server. The middleware automatically verifies tokens from `socket.handshake.auth.token`.
-
-```javascript
-const http = require("http");
-const { socket } = require("@cnk/node-api-master");
-
-const server = http.createServer(app);
-
-// Initialize Socket with JWT protection
-const io = socket.initSocket(server, {
-  authRequired: true,
-  jwtSecret: process.env.JWT_SECRET,
-});
-
-io.on("connection", (s) => {
-  console.log("Authenticated User ID:", s.user.id);
-});
-
-server.listen(PORT);
-```
-
----
-
-### 3. Authentication Middleware (HTTP)
-
-Protect your Express routes using JWT.
-
-```javascript
-const { auth, admin } = require("@cnk/node-api-master");
-
-// Protect a route
-router.get("/me", auth(), userController.getMe);
-
-// Admin only route
-router.delete("/users/:id", auth(), admin, userController.deleteUser);
-```
-
----
-
-### 4. Request Validation (Joi)
-
-Validate incoming request bodies, params, or queries.
-
-```javascript
-const { validate, schemas, Joi } = require("@cnk/node-api-master");
-
-// Use pre-built schemas
-router.post("/login", validate(schemas.user.login), authController.login);
-
-// Use custom schema
-const profileSchema = Joi.object({
-  bio: Joi.string().max(200),
-  website: Joi.string().uri(),
-});
-router.put("/profile", validate(profileSchema), userController.updateProfile);
-```
-
----
-
-### 5. Standardized Responses & Error Handling
-
-Keep your API responses consistent across the entire project.
-
-```javascript
-const {
-  catchAsync,
-  AppError,
-  apiResponse,
-  STATUS_CODES,
-} = require("@cnk/node-api-master");
-
-exports.getUser = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user) {
-    return next(new AppError("User not found!", STATUS_CODES.NOT_FOUND));
-  }
-
-  apiResponse.success(res, user, "User retrieved successfully");
-});
-```
-
----
-
-### 6. Global Error Middleware
-
-**Mandatory:** Register this at the very end of your middleware stack in `app.js`.
-
-```javascript
-const { errorMiddleware } = require("@cnk/node-api-master");
-
-// After all your routes
+// Must be at the end of all routes
 app.use(errorMiddleware);
 ```
 
+### 2. Using catchAsync & apiResponse
+
+Clean up your controllers easily:
+
+```javascript
+import { catchAsync, apiResponse, AppError } from "@codenokami/node-api-master";
+
+export const getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(new AppError("User not found", 404));
+  }
+
+  return apiResponse.success(res, user, "User retrieved successfully");
+});
+```
+
+### 3. Validating Requests
+
+Use pre-built Joi schemas:
+
+```javascript
+import { validate, schemas } from "@codenokami/node-api-master";
+
+// Apply validation as middleware
+router.post(
+  "/register",
+  validate(schemas.user.register),
+  authController.register,
+);
+```
+
 ---
 
-## 🛠 Project Structure
+## 🛠 Utilities Reference
 
-- `src/db`: Mongoose connection helpers.
-- `src/middleware`: Auth, Admin, Validation, and Global Error handlers.
-- `src/socket`: Socket.io initialization and JWT middleware.
-- `src/utils`: `AppError`, `catchAsync`, and API response helpers.
-- `src/validations`: Reusable Joi schemas.
+| Utility                                | Description                                                |
+| -------------------------------------- | ---------------------------------------------------------- |
+| `generateUUID()`                       | Returns a secure v4 UUID string.                           |
+| `authHelper.hashPassword(pw)`          | Hashes password using bcrypt.                              |
+| `authHelper.comparePassword(pw, hash)` | Compares plain text password with hash.                    |
+| `STATUS_CODES`                         | Standard HTTP Status codes (OK: 200, NOT_FOUND: 404, etc.) |
 
 ---
 
-## 📄 License
+## 🏗 Build Status
 
-MIT © CNK
+- **ES Modules (ESM)**: Supported (`.mjs`)
+- **CommonJS (CJS)**: Supported (`.cjs`)
+- **TypeScript**: Type definitions included (`.d.ts`)
+
+## 📜 License
+
+MIT © CodeNoKami
