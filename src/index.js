@@ -12,7 +12,7 @@ import errorMiddleware from "./middleware/errorMiddleware.js";
 // 4. Utilities
 import catchAsync from "./utils/catchAsync.js";
 import AppError from "./utils/AppError.js";
-import * as apiResponse from "./utils/response.js";
+import apiResponse from "./utils/response.js";
 import STATUS_CODES from "./utils/constants.js";
 import {
   hashPassword,
