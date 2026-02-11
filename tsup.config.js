@@ -2,13 +2,14 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: {
-    index: "src/index.js", // Root export
-    validation: "src/validations/index.js", // Sub-path export
-    socket: "src/middleware/socketAuth.js", // Sub-path export
+    index: "src/index.js", // @codenokami/node-api-master
+    validation: "src/validation-entry.js", // @codenokami/node-api-master/validation
+    socket: "src/socket-entry.js", // @codenokami/node-api-master/socket
   },
   format: ["cjs", "esm"],
   dts: true,
   clean: true,
-  splitting: true, // ကုဒ်တွေကို share လုပ်နိုင်အောင် ခွဲထုတ်ပေးသည်
+  splitting: true,
   minify: true,
+  external: ["joi", "mongoose", "socket.io"],
 });

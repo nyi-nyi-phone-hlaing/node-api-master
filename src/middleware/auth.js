@@ -6,7 +6,7 @@ import catchAsync from "../utils/catchAsync.js";
  * Auth Middleware - Supports Bearer Token & Cookies
  * @param {string} secret - JWT Secret (Default is process.env.JWT_SECRET)
  */
-export const auth = (secret = process.env.JWT_SECRET) =>
+export const auth = (secret = process.env.JWT_SECRET, options = {}) =>
   catchAsync(async (req, res, next) => {
     let token;
 
@@ -18,8 +18,8 @@ export const auth = (secret = process.env.JWT_SECRET) =>
       token = req.headers.authorization.split(" ")[1];
     }
     // 2) Cookie ကနေ Token ကို စစ်ဆေးခြင်း
-    else if (req.cookies && req.cookies.jwt) {
-      token = req.cookies.jwt;
+    else if (req.cookies && req.cookies[options.cookieName || "jwt"]) {
+      token = req.cookies[options.cookieName || "jwt"];
     }
 
     // Secret မရှိရင် Developer ကို သတိပေးဖို့ Error ပြမယ်

@@ -1,25 +1,25 @@
 {
   "name": "@codenokami/node-api-master",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Professional utility package for Express.js APIs with Auth, Socket, and Error Handling",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./validation": {
+      "types": "./dist/validation.d.ts",
       "import": "./dist/validation.mjs",
-      "require": "./dist/validation.cjs",
-      "types": "./dist/validation.d.ts"
+      "require": "./dist/validation.cjs"
     },
     "./socket": {
+      "types": "./dist/socket.d.ts",
       "import": "./dist/socket.mjs",
-      "require": "./dist/socket.cjs",
-      "types": "./dist/socket.d.ts"
+      "require": "./dist/socket.cjs"
     }
   },
   "files": [
