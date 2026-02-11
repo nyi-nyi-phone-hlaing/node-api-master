@@ -10,6 +10,16 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
+    },
+    "./validation": {
+      "import": "./dist/validation.mjs",
+      "require": "./dist/validation.cjs",
+      "types": "./dist/validation.d.ts"
+    },
+    "./socket": {
+      "import": "./dist/socket.mjs",
+      "require": "./dist/socket.cjs",
+      "types": "./dist/socket.d.ts"
     }
   },
   "files": [
@@ -17,8 +27,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsup src/index.js --format cjs,esm --dts --clean",
-    "dev": "tsup src/index.js --format cjs,esm --watch --dts",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "lint": "eslint src/**/*.js"
   },
   "dependencies": {
@@ -43,16 +53,6 @@
   },
   "author": "CNK",
   "license": "MIT",
-  "keywords": [
-    "express",
-    "api",
-    "auth",
-    "socket.io",
-    "jwt",
-    "mongoose",
-    "validation",
-    "utility"
-  ],
   "devDependencies": {
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
