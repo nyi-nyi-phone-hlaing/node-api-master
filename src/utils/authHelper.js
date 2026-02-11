@@ -26,23 +26,26 @@ export const generateToken = (payload, res, options = {}) => {
   const secret = options.secret || process.env.JWT_SECRET;
   const expiresIn = options.expiresIn || "30d";
   const cookieName = options.cookieName || "jwt";
+  const isProduction = process.env.NODE_ENV === "production";
 
   // 1. Token Generate လုပ်ခြင်း
   const token = jwt.sign(payload, secret, {
     expiresIn: expiresIn,
   });
 
-  // 2. Cookie Options သတ်မှတ်ခြင်း
-  const cookieOptions = {
-    maxAge: options.maxAge || 30 * 24 * 60 * 60 * 1000, // Default 30 days
-    httpOnly: true, // JavaScript မှ ဖတ်မရအောင် (Prevent XSS)
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // CSRF Protection
-    secure: process.env.NODE_ENV === "production", // Production တွင် HTTPS သုံးမှသာ အလုပ်လုပ်မည်
-    ...options.extraCookieOptions, // တခြား အပို options များရှိလျှင် ထည့်ရန်
-  };
+  if (res && typeof res.cookie === "function") {
+    // 2. Cookie Options သတ်မှတ်ခြင်း
+    const cookieOptions = {
+      maxAge: options.maxAge || 30 * 24 * 60 * 60 * 1000, // Default 30 days
+      httpOnly: true, // JavaScript မှ ဖတ်မရအောင် (Prevent XSS)
+      sameSite: isProduction ? "none" : "lax", // CSRF Protection
+      secure: isProduction, // Production တွင် HTTPS သုံးမှသာ အလုပ်လုပ်မည်
+      ...options.extraCookieOptions, // တခြား အပို options များရှိလျှင် ထည့်ရန်
+    };
 
-  // 3. Cookie ထဲသို့ ထည့်ခြင်း
-  res.cookie(cookieName, token, cookieOptions);
+    // 3. Cookie ထဲသို့ ထည့်ခြင်း
+    res.cookie(cookieName, token, cookieOptions);
+  }
 
   return token;
 };

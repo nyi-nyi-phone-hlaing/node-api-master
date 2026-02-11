@@ -6,9 +6,10 @@ import STATUS_CODES from "../utils/constants.js";
 const errorMiddleware = (err, req, res, next) => {
   err.statusCode = err.statusCode || STATUS_CODES.INTERNAL_SERVER_ERROR;
   err.status = err.status || "error";
+  const isProduction = process.env.NODE_ENV === "production";
 
   // Development mode မှာ Error အပြည့်အစုံပြပြီး Production မှာ message ပဲ ပြမယ်
-  if (process.env.NODE_ENV === "development") {
+  if (!isProduction) {
     res.status(err.statusCode).json({
       status: err.status,
       error: err,
