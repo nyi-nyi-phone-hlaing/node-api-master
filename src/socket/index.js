@@ -6,7 +6,7 @@ let io;
 /**
  * Socket Authentication Middleware
  */
-const socketAuth = (secret) => {
+export const socketAuth = (secret) => {
   return (socket, next) => {
     const token =
       socket.handshake.auth?.token || socket.handshake.headers?.token;
